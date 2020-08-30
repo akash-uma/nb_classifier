@@ -89,7 +89,7 @@ class bayes_classifier:
                 part4 = np.log(params[i]['pi'])
                 log_post[:,i] = part1 + part2 + part3 + part4
 
-        return np.argmax(log_post,axis=1)
+        return self.class_labels[np.argmax(log_post,axis=1)]
 
 
     def accuracy(self,X,y):        
