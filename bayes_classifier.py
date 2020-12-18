@@ -55,10 +55,9 @@ class bayes_classifier:
 
         # deal with shared covariance
         if self.dist_type=='shared_full' or self.dist_type=='shared_diag':
-            sigma_sum = np.zeros(sigma.shape)
+            sigma = np.zeros(sigma.shape)
             for i in range(self.n_classes):
-                sigma_sum = sigma_sum + params[i]['sigma']
-            sigma = sigma_sum/self.n_classes
+                sigma = sigma + (params[i]['sigma']*sum(y==self.class_labels[i])/N)
             for i in range(self.n_classes):
                 params[i]['sigma'] = sigma
 
@@ -140,3 +139,9 @@ class bayes_classifier:
 
         return pred, acc
 
+
+    def get_params(self):
+        if hasattr(self,'params'):
+            return self.params
+        else:
+            raise Exception('nb model has not been training yet. Cannot get parameters!!!')
