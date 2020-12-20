@@ -4,9 +4,8 @@ import sklearn.model_selection as ms
 class bayes_classifier:
     
 
-    def __init__(self,dist_type='diag_gauss',min_var=0.01,prior_type='equal'):
+    def __init__(self,dist_type='diag_gauss',prior_type='equal'):
         # set prior type and minimum variance threshold
-        self.min_var=min_var
         self.prior_type=prior_type
         
         # set conditional distribution type
@@ -36,7 +35,6 @@ class bayes_classifier:
             curr_dat = X[y==self.class_labels[i],:]
             mu = curr_dat.mean(axis=0)
             sigma = np.cov(curr_dat.T,bias=True)
-            sigma = np.maximum(sigma,self.min_var)
 
             # deal with diagonal covariance or poisson distribution
             if self.dist_type=='diag_gauss' or self.dist_type=='shared_diag':
@@ -115,7 +113,7 @@ class bayes_classifier:
             X_train,X_test = X[train_idx], X[test_idx]
             y_train,y_test = y[train_idx], y[test_idx]
 
-            tmp = bayes_classifier(self.dist_type,self.min_var,self.prior_type)
+            tmp = bayes_classifier(self.dist_type,self.prior_type)
             tmp.train(X_train,y_train)
             curr_y = tmp.predict(X_test)
             del tmp
